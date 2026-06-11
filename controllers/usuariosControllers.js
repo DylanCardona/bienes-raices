@@ -1,11 +1,14 @@
 const formularioLogin = (req, res) => {
     res.render("auth/login", {
-        autenticado: true
+        autenticado: true,
+        tituloPagina: "Inicio de Sesión"
     });
 };
 
 const formularioRegistro = (req, res) => {
-    res.render("auth/register");
+    res.render("auth/register", {
+        tituloPagina: "Formulario de Registro"
+    });
 }
 
 export { formularioLogin, formularioRegistro}

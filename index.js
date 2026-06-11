@@ -11,6 +11,9 @@ app.set("views", "./views")
 // Definir Puerto
 const PORT = 3000;
 
+//Definir la ruta publica
+app.use(express.static("public"))
+
 // Rutas
 app.use("/auth", usuariosRouter)
 
