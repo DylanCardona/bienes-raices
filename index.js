@@ -1,15 +1,18 @@
 import express from "express";
+import usuariosRouter from "./routes/usuariosRoutes.js"
 
 // Crear APP
 const app = express();
+
+// Habilitar Pug
+app.set("view engine", "pug")
+app.set("views", "./views")
 
 // Definir Puerto
 const PORT = 3000;
 
 // Rutas
-app.get("/", (req, res) => {
-  res.send("Bienvenido a mi API");
-});
+app.use("/auth", usuariosRouter)
 
 // Iniciar Servidor
 app.listen(PORT, () => {
