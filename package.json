@@ -28,8 +28,11 @@
   },
   "homepage": "https://github.com/jsebastiandq/bienes-raices#readme",
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "pug": "^3.0.4"
+    "mysql2": "^3.22.5",
+    "pug": "^3.0.4",
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.0",
