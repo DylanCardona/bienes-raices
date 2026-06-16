@@ -13,5 +13,5 @@ Ficha: 3231252
 
 ## Inicio de Estilos
 ```bash
-    npm run dev
+    npm run css
 ```
