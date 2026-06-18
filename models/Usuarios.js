@@ -20,9 +20,8 @@ const Usuario = db.define("usuarios", {
 },{
     hooks: {
         beforeCreate: async function (usuario) {
-            const salt = await bcrypt.genSalt(14)
+            const salt = await bcrypt.genSalt(10)
             usuario.password = await bcrypt.hash(usuario.password, salt)
-            
         }
     }
 })
