@@ -9,9 +9,14 @@ const app = express();
 app.set("view engine", "pug")
 app.set("views", "./views")
 
+// Habilitar lectura de Forms
+app.use(express.urlencoded({extended: true}))
+
+
 // Conexion a DB
 try{
   await db.authenticate()
+  db.sync()
   console.log("La conexion es exitosa")
 } catch (error) {
   console.error("No se puede conectar", error)
