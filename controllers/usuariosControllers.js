@@ -1,4 +1,5 @@
 import { check, validationResult } from "express-validator";
+import bcrypt from "bcryptjs";
 import Usuario from "../models/Usuarios.js"
 
 const formularioLogin = (req, res) => {
@@ -51,7 +52,31 @@ const registrar = async(req, res) => {
             }
         })
     }
-    //const usuarios = await Usuario.create(req.body)
+
+    // Extraer datos
+    const {nombre, email, password } = req.body
+
+    //Validar si el correo existe
+    const existeUsuario = await Usuario.findOne({where: {email}})
+    if (existeUsuario){
+        return res.render("auth/register", {
+            tituloPagina: "Formulario de Registro",
+            errores: [{ msg: "El usuario ya existe"}],
+            usuario: {
+                nombre: req.body.nombre,
+                email: req.body.email
+            }
+        })
+    }
+
+    //Este es el comando que crea la cuenta
+    const usuarios = await Usuario.create({
+        nombre,
+        email,
+        password,
+        token: 123,
+    })
+    
     res.json(usuarios)
     
 }
