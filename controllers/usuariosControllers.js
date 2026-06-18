@@ -1,6 +1,8 @@
 import { check, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import Usuario from "../models/Usuarios.js"
+import { generarId } from "../helpers/tokens.js";
+import { emailRegistro } from "../helpers/emails.js";
 
 const formularioLogin = (req, res) => {
     res.render("auth/login", {
@@ -74,11 +76,51 @@ const registrar = async(req, res) => {
         nombre,
         email,
         password,
-        token: 123,
+        token: generarId(),
+    })
+
+    res.render("templates/mensaje" , {
+        tituloPagina: "Cuenta creada",
+        mensaje: "La cuenta ha sido creada, Verifica tu correo para validar la cuenta!"
+    })
+
+    // Enviar correo
+    emailRegistro({
+        nombre: usuarios.nombre,
+        email: usuarios.email,
+        token: usuarios.token
     })
     
-    res.json(usuarios)
-    
+}
+
+const confirmar= async(req,res) => {
+    const {token} = req.params
+    console.log(token)
+
+    //Validar el token si existe
+    const usuario = await Usuario.findOne({where: {token}})
+    console.log(usuario)
+
+    // Confirmar la cuenta
+    if(!usuario) {
+        return res.render("auth/confirmar",{
+            tituloPagina: "Cuenta confirmada",
+            mensaje: "Hubo un error al confirmar la cuenta",
+            error: true
+        })
+    }
+
+    // Valida la informacion y lo manda a DB.
+
+    usuario.token = null
+    usuario.confirmado = true
+
+    await usuario.save()
+
+    res.render("auth/confirmar", {
+        tituloPagina: "Cuenta confirmada",
+        mensaje: "La cuenta se confirmo"
+    })
 }
 
 const formularioOlvidePassword = (req, res) => {
@@ -87,4 +129,4 @@ const formularioOlvidePassword = (req, res) => {
     });
 }
 
-export { formularioLogin, registrar, formularioRegistro, formularioOlvidePassword}
+export { formularioLogin, registrar, confirmar, formularioRegistro, formularioOlvidePassword}
